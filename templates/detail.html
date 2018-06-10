@@ -1,0 +1,197 @@
+{% extends 'index.html' %}
+{% block title %}商品详情{% endblock %}
+{% block shop %}
+    <div class="navbar_con">
+        <div class="navbar clearfix">
+            <div class="subnav_con fl">
+                <h1>全部商品分类</h1>
+                <span></span>
+                <ul class="subnav">
+                    <li><a href="#" class="fruit">新鲜水果</a></li>
+                    <li><a href="#" class="seafood">海鲜水产</a></li>
+                    <li><a href="#" class="meet">猪牛羊肉</a></li>
+                    <li><a href="#" class="egg">禽类蛋品</a></li>
+                    <li><a href="#" class="vegetables">新鲜蔬菜</a></li>
+                    <li><a href="#" class="ice">速冻食品</a></li>
+                </ul>
+            </div>
+            <ul class="navlist fl">
+                <li><a href="/goods/index">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="breadcrumb">
+        <a href="#">全部分类</a>
+        <span>></span>
+        <a href="#">新鲜水果</a>
+        <span>></span>
+        <a href="#">商品详情</a>
+    </div>
+    {% for a in context %}
+
+        <div class="goods_detail_con clearfix">
+            <div class="goods_detail_pic fl">{{ a.pic|safe }}</div>
+
+            <div class="goods_detail_list fr">
+                <h3> {{ a.gtitle }}</h3>
+                <p>{{ a.gjianjie }}。</p>
+                <div class="prize_bar">
+                    <span class="show_pirze">¥<em id="price">{{ a.gprice }}</em></span>
+                    <span class="show_unit">单  位：{{ a.gunit }}</span>
+                </div>
+                <div class="goods_num clearfix">
+                    <div class="num_name fl">数 量：</div>
+                    <div class="num_add fl">
+                        <input type="text" class="num_show fl" id="zhi" value="1" oninput="myFunction()">
+                        <a href="javascript:;" class="add fr" id="add">+</a>
+                        <a href="javascript:;" class="minus fr" id="lose">-</a>
+                    </div>
+                </div>
+                <div class="total">总价：<em id="money">{{ a.gprice }}</em>元</div>
+                <div class="operate_btn">
+                    <a href="javascript:;" class="buy_btn">立即购买</a>
+                    <a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main_wrap clearfix">
+            <div class="l_wrap fl clearfix">
+                <div class="new_goods">
+                    <h3>新品推荐</h3>
+                    <ul>
+                        <li>
+                            <a href="#"><img src="/static/images/goods/goods001.jpg"></a>
+                            <h4><a href="#">进口柠檬</a></h4>
+                            <div class="prize">￥3.90</div>
+                        </li>
+                        <li>
+                            <a href="#"><img src="/static/images/goods/goods002.jpg"></a>
+                            <h4><a href="#">玫瑰香葡萄</a></h4>
+                            <div class="prize">￥16.80</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="r_wrap fr clearfix">
+                <ul class="detail_tab clearfix">
+                    <li class="active">商品介绍</li>
+                    <li>评论</li>
+                </ul>
+
+                <div class="tab_content">
+                    <dl>
+                        <dt>商品详情：</dt>
+                        <dd>{{ a.gjianjie }}</dd>
+                    </dl>
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block js %}
+    {#	<script type="text/javascript" src="/static/js/jquery-1.12.2.js"></script>#}
+    <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var $add_x = $('#add_cart').offset().top;
+        var $add_y = $('#add_cart').offset().left;
+        var $to_x = $('#show_count').offset().top;
+        var $to_y = $('#show_count').offset().left;
+        $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'})
+        $('#add_cart').click(function () {
+            $(".add_jump").stop().animate({
+                    'left': $to_y + 7,
+                    'top': $to_x + 7
+                },
+                "fast", function () {
+                    $(".add_jump").fadeOut('fast', function () {
+                        $('#show_count').html(2);
+                    });
+                });
+        })
+    </script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script>
+        function myFunction() {
+            var a = parseInt($('#zhi').val());
+            var b = parseFloat($('#price').html());
+            var c = a * b;
+            $('#money').html(parseFloat(c));
+        }
+
+        {##}
+        {#$('#add').click(function () {#}
+        {#    var a = $('#zhi').val();#}
+        {#    var b = $('#price').html();#}
+        {#    dic = {key1: a, key2: b};#}
+        {#    $.post("{% url 'add' %}", dic, function (da) {#}
+        {#        $('#zhi').val(da.a);#}
+        {#        $('#money').html(da.c);#}
+        {#    })#}
+        {#{);#}
+        {##}
+        {#$('#lose').click(function () {#}
+        {#    var a = $('#zhi').val();#}
+        {#    var b = $('#price').html();#}
+        {#    dic = {key1: a, key2: b};#}
+        {#    $.post("{% url 'lose' %}", dic, function (data) {#}
+        {#        $('#zhi').val(data.a);#}
+        {#        $('#money').html(data.c);#}
+        {#    })#}
+        {#{)#}
+        {#$(function () {#}
+        {##}
+        {#    var count = $('#zhi').val();#}
+        {#    alert(count);#}
+        {#    {% for i in context %}#}
+        {#        var id = {{ i.id }}#}
+        {#    {% endfor %}#}
+        {#dict = {key1: id, key2: count};#}
+        {#    $('#add_cart').click(function () {#}
+        {#        alert(count);#}
+        {#        $.post("{% url 'join' %}", dict, function (data) {#}
+        {#alert(data.u);#}
+        {#        });#}
+        {#    });#}
+        {#{);#}
+        // 数量减
+        $("#lose").click(function () {
+            var t = $(this).parent().find('.num_show');
+            t.val(parseInt(t.val()) - 1);
+            if (t.val() <= 1) {
+                t.val(1);
+            }
+            myFunction();
+        });
+        // 数量加
+        $("#add").click(function () {
+            var t = $(this).parent().find('.num_show');
+            t.val(parseInt(t.val()) + 1);
+            if (t.val() <= 1) {
+                t.val(1);
+            }
+            myFunction();
+        });
+        $('#add_cart').click(function () {
+            var c = $('#zhi').val();
+            {% for a in context %}
+                var id = {{ a.id }};
+            {% endfor %}
+            dic = {key1: c, key2: id};
+            $.post("{% url 'join' %}", dic, function (data) {
+                alert(data.u);
+            })
+        })
+    </script>
+{% endblock %}
